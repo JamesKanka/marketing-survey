@@ -58,7 +58,7 @@ SurveyResponseSchema.statics.advanceSurvey = function(args, cb) {
         } else if (currentQuestion.type === 'number') {
             // Try and cast to a Number
             var num = Number(input);
-            if (isNaN(num)) {
+            if (isNaN(num) || num > 10 || num < 1) {
                 // don't update the survey response, return the same question
                 return reask();
             } else {

@@ -4,5 +4,5 @@ module.exports = {
 
     // MongoDB connection string - MONGO_URL is for local dev,
     // MONGOLAB_URI is for the MongoLab add-on for Heroku deployment
-    mongoUrl: process.env.MONGOLAB_URI || 'mongodb://localhost/hways'
+    mongoUrl: process.env.MONGOLAB_URI || process.env.MONGOLAB_URL || 'mongodb://localhost/hways'
 };

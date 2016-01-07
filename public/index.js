@@ -4,14 +4,18 @@ $(function() {
     function effectiveness(results) {
         // Collect age results
         var data = {};
+        var total;
         for (var i = 0, l = results.length; i < l; i++) {
             var effectivenessResponse = results[i].responses[0];
             var k = String(effectivenessResponse.answer);
+            total += effectivenessResponse.answer;
             if (!data[k]) data[k] = 1;
             else data[k]++;
         }
 
         // Assemble for graph
+        var average = total/results.length;
+        console.log(average);
         var labels = Object.keys(data);
         var dataSet = [];
         for (var k in data)
@@ -23,8 +27,25 @@ $(function() {
             labels: labels,
             datasets: [{
                 label: 'Effectiveness',
-                data: dataSet
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: {average}
             }]
+        }, {
+            // Boolean - If we want to override with a hard coded scale
+            scaleOverride: true,
+
+            // ** Required if scaleOverride is true **
+            // Number - The number of steps in a hard coded scale
+            scaleSteps: 10,
+            // Number - The value jump in the hard coded scale
+            scaleStepWidth: 1,
+            // Number - The scale starting value
+            scaleStartValue: 0
         });
     }
 
@@ -50,12 +71,18 @@ $(function() {
             labels: labels,
             datasets: [{
                 label: 'Prepairedness',
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
                 data: dataSet
             }]
         });
     }
 
-        function confidence(results) {
+    function confidence(results) {
         // Collect age results
         var data = {};
         for (var i = 0, l = results.length; i < l; i++) {
@@ -77,6 +104,12 @@ $(function() {
             labels: labels,
             datasets: [{
                 label: 'Confidence',
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
                 data: dataSet
             }]
         });
@@ -130,7 +163,7 @@ $(function() {
         $responses.append(content);
     }
 
-        // add text responses to a table
+    // add text responses to a table
     function freeText2(results) {
         var $responses = $('#confusionResponses');
         var content = '';

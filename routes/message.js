@@ -1,5 +1,5 @@
 var config = require('../config');
-var twilio = require('twilio')(config.accountSid, config.authToken);
+var twilio = require('twilio');
 var SurveyResponse = require('../models/SurveyResponse');
 var survey = require('../survey_data');
 

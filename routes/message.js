@@ -1,5 +1,6 @@
+var Subscriber = require('../models/Subscriber');
 var config = require('../config');
-var twilio = require('twilio');
+var client = require('twilio')(config.accountSid, config.authToken);
 var SurveyResponse = require('../models/SurveyResponse');
 var survey = require('../survey_data');
 
@@ -15,6 +16,26 @@ module.exports = function(request, response) {
         response.type('text/xml');
         response.send(twiml.toString());
     }
+
+        // Try to find a subscriber with the given phone number
+    Subscriber.findOne({
+        phone: phone
+    }, function(err, sub) {
+        if (err) return respond('Derp! Please text back again later.');
+
+        if (!sub) {
+            // If there's no subscriber associated with this phone number,
+            // create one
+            var newSubscriber = new Subscriber({
+                phone: phone
+            });
+            newSubscriber.subscribed = true;
+            newSubscriber.save(function(err, newSub) {
+                if (err || !newSub)
+                    return respond('We couldn\'t sign you up - try again.');
+            });
+        }
+    });
 
     // Check if there are any responses for the current number in an incomplete
     // survey response

@@ -18,5 +18,5 @@ module.exports = {
 	// A Twilio number you control - choose one from:
 	// https://www.twilio.com/user/account/phone-numbers/incoming
 	// Specify in E.164 format, e.g. "+16519998877"
-	// twilioNumber: process.env.TWILIO_NUMBER
+	twilioNumber: process.env.TWILIO_NUMBER
 };

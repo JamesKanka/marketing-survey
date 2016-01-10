@@ -1,8 +1,10 @@
-var Subscriber = require('../models/Subscriber');
 var config = require('../config');
+var twilio = require('twilio');
 var client = require('twilio')(config.accountSid, config.authToken);
 var SurveyResponse = require('../models/SurveyResponse');
+var Subscriber = require('../models/Subscriber');
 var survey = require('../survey_data');
+// add chron to set up monthly surveys
 
 // Handle SMS submissions
 module.exports = function(request, response) {
@@ -17,7 +19,7 @@ module.exports = function(request, response) {
         response.send(twiml.toString());
     }
 
-        // Try to find a subscriber with the given phone number
+    // Try to find a subscriber with the given phone number
     Subscriber.findOne({
         phone: phone
     }, function(err, sub) {
@@ -67,12 +69,18 @@ module.exports = function(request, response) {
         var responseMessage = '';
 
         if (err || !surveyResponse) {
-            return respond('Terribly sorry, but an error has occurred. '
-                + 'Please retry your message.');
+            return respond('Terribly sorry, but an error has occurred. ' + 'Please retry your message.');
         }
 
         // If question is null, we're done!
         if (!question) {
+            Subscriber.findOne({
+                phone: phone
+            }, function(err, sub) {
+                if (err) return respond('Derp! Please text back again later.');
+                sub.surveys.push(surveyResponse._id);
+                sub.save();
+            });
             return respond('Done! You are awesome and your feedback is invaluable. Goodbye and Thanks!');
         }
 

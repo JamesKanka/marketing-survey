@@ -11,14 +11,10 @@ var SubscriberSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    stripe: {},
-    products: [{
-        productID: String,
-        time: {
-            type: Date,
-            default: Date.now
-        }
-    }]
+    firstName: String,
+    lastName: String,
+    type: String,
+    surveys: []
 });
 
 // Static function to send a message to all current subscribers

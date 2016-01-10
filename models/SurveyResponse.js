@@ -13,7 +13,7 @@ var SurveyResponseSchema = new mongoose.Schema({
 
     // record of answers
     responses: [mongoose.Schema.Types.Mixed]
-});
+}, { timestamps: true });
 
 // For the given phone number and survey, advance the survey to the next
 // question
